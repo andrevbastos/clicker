@@ -6,14 +6,21 @@ function draw() {
     // Limpa o canvas para evitar sobreposição de desenhos anteriores
     ctx.clearRect(0, 0, canvas.width, canvas.height); 
 
-    if (rock) {
-        drawRock();
+    
+    if (runners.length != 0) {
+        for (let runner of runners) {
+            drawRunner(runner);
+        }
     }
     
     if (frags.length != 0) {
         for (let frag of frags) {
             drawFragment(frag);
         }
+    }
+    
+    if (rock) {
+        drawRock();
     }
     
     drawPoints();

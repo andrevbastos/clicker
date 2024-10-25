@@ -1,4 +1,5 @@
 const frags = [];
+const runnerRadius = 25;
 let isDragging = false;
 
 // Função de criação de fragmento
@@ -6,6 +7,7 @@ function createFragment(x, y) {
     return {
         x: x,
         y: y, 
+        radius: fragRadius,
         drag: false
     };
 };
@@ -15,7 +17,7 @@ function drawFragment(frag) {
     ctx.save();
 
     ctx.beginPath();
-    ctx.arc(frag.x, frag.y, 25, 0, 2 * Math.PI);
+    ctx.arc(frag.x, frag.y, fragRadius, 0, 2 * Math.PI);
     ctx.strokeStyle = '#FDFEFE'
     ctx.lineWidth = 10;
     ctx.stroke();
@@ -24,6 +26,14 @@ function drawFragment(frag) {
 
     ctx.restore();
 };
+
+function updateFragments() {
+    for (let frag of frags) {
+        if (checkDeploy(frag)) {
+            deploy(frag);
+        }
+    }
+}
 
 // Limpa os fragmento da tela ao reescalar a página
 window.addEventListener('resize', () => {
@@ -37,11 +47,6 @@ canvas.addEventListener('mousemove', (e) => {
     if (isDragging && user.draggedFragment) {
         user.draggedFragment.x = mouseX;
         user.draggedFragment.y = mouseY;
-        // Se arrastar para a borda da tela, entrega o fragmento
-        if (checkDeploy(user.draggedFragment)) {
-            deploy(frags.findIndex(userDragged)); 
-            user.draggedFragment = null;
-        };
     }
 });
 
@@ -75,16 +80,19 @@ function userDragged(frag) {
     return frag == user.draggedFragment;
 };
 
-// Checa se o fragmento esta na área de entrega
+// Checa se o fragmento está na área de entrega
 function checkDeploy(frag) {
-    return  frag.x <= 50 ||
-            frag.x >= canvas.width - 50 ||
-            frag.y <= 50 ||
-            frag.y >= canvas.height - 50;
-};
+    return frag.x <= frag.radius ||
+           frag.x >= canvas.width - frag.radius ||
+           frag.y <= frag.radius ||
+           frag.y >= canvas.height - frag.radius;
+}
 
 // Entrega o fragmento e adiciona os pontos
-function deploy(position) {
-    frags.splice(position, 1);
-    points += 10;
-};
+function deploy(frag) {
+    const index = frags.indexOf(frag); // Encontrar o índice do fragmento
+    if (index !== -1) { // Verifica se o fragmento está presente
+        frags.splice(index, 1); // Remove o fragmento da lista
+        points += 10; // Adiciona pontos
+    }
+}

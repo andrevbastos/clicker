@@ -2,6 +2,7 @@ const rockRadius = 100;
 const rock = {
     x: (canvas.width / 2),
     y: (canvas.height / 2),
+    radius: rockRadius
 };
 
 // Centraliza a pedra ao carregar a página
