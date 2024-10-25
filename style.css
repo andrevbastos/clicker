@@ -1,0 +1,16 @@
+html, body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    background-color: #E7EBEB;
+}
+  
+  canvas {
+    margin: auto;
+    display: block;
+    border: 2px solid black;
+    background-color: #37333E;
+}
+  
