@@ -1,4 +1,7 @@
 let points = 0;
+const user = {
+    draggedFragment: null
+}
 
 function drawPoints() {
     ctx.save();

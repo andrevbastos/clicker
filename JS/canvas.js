@@ -6,17 +6,17 @@ function draw() {
     // Limpa o canvas para evitar sobreposição de desenhos anteriores
     ctx.clearRect(0, 0, canvas.width, canvas.height); 
 
-    drawPoints();
-
     if (rock) {
         drawRock();
     }
-
+    
     if (frags.length != 0) {
         for (let frag of frags) {
             drawFragment(frag);
         }
     }
+    
+    drawPoints();
 };
 
 // Reescala o canvas com base no tamanho da janela da página

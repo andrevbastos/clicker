@@ -20,12 +20,16 @@ window.addEventListener('resize', () => {
 canvas.addEventListener('mousedown', () => {
     // Cria um fragmento de clicar com o mouse em cima da pedra
     if (isCollidingCircle(mouseX, mouseY, rock)) {
-        const targetX = rock.x;
-        const targetY = (rock.y + rockRadius) + 50;
-        const newFragment = createFragment(targetX, targetY);
+        const targetX = Math.random() * (window.innerWidth - 200) + 100;
+        const targetY = Math.random() * (window.innerHeight - 200) + 100;
 
+        while (isCollidingCircle(targetX, targetY, rock)) {
+            targetX = Math.random() * (window.innerWidth - 200) + 100;
+            targetY = Math.random() * (window.innerHeight - 200) + 100;
+        }
+
+        const newFragment = createFragment(targetX, targetY);
         frags.push(newFragment);
-        console.log('Fragmento criado');
     }
 });
 

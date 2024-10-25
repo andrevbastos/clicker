@@ -1,8 +1,7 @@
 const frags = [];
 let isDragging = false;
-let draggedFragment = null;
 
-// Função para criar um fragmento
+// Função de criação de fragmento
 function createFragment(x, y) {
     return {
         x: x,
@@ -34,16 +33,15 @@ window.addEventListener('resize', () => {
 
 // EventListener para o movimento do mouse
 canvas.addEventListener('mousemove', (e) => {
-    // Se estives arrastando um fragmento move o mesmo com o movimento do mouse
-    if (isDragging && draggedFragment) {
-        draggedFragment.x = mouseX;
-        draggedFragment.y = mouseY;
-        // Se arrastar para a borda da tela entrega o fragmento
-        for (let frag of frags) {
-            if (checkDeploy(frag)) {
-                deploy(frag); 
-            };
-        }
+    // Se estiver arrastando um fragmento, move o mesmo com o movimento do mouse
+    if (isDragging && user.draggedFragment) {
+        user.draggedFragment.x = mouseX;
+        user.draggedFragment.y = mouseY;
+        // Se arrastar para a borda da tela, entrega o fragmento
+        if (checkDeploy(user.draggedFragment)) {
+            deploy(frags.findIndex(userDragged)); 
+            user.draggedFragment = null;
+        };
     }
 });
 
@@ -54,8 +52,8 @@ canvas.addEventListener('mousedown', () => {
         for (let frag of frags) {
             if (isCollidingCircle(mouseX, mouseY, frag)) {
                 isDragging = true;
-                draggedFragment = frag;
-                draggedFragment.drag = true;
+                user.draggedFragment = frag;
+                user.draggedFragment.drag = true;
                 break;
             }
         }
@@ -65,12 +63,17 @@ canvas.addEventListener('mousedown', () => {
 // EventListener de soltar o mouse
 canvas.addEventListener('mouseup', () => {
     // Se estiver arrastando um fragmento, o solta
-    if (isDragging && draggedFragment) {
+    if (isDragging && user.draggedFragment) {
         isDragging = false;
-        draggedFragment.drag = false;
-        draggedFragment = null;
+        user.draggedFragment.drag = false;
+        user.draggedFragment = null;
     }
 });
+
+// Função para buscar o fragmento arrastável no array de fragmentos
+function userDragged(frag) {
+    return frag == user.draggedFragment;
+};
 
 // Checa se o fragmento esta na área de entrega
 function checkDeploy(frag) {
